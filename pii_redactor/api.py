@@ -39,7 +39,9 @@ def cleanup_temp_dir(tmpdir: tempfile.TemporaryDirectory):
 @app.get("/health", summary="Health Check")
 async def health_check():
     return {"status": "ok", "service": "PII Redactor"}
-
+@app.get('/')
+async def root():
+    return {"message": "Welcome to the PII Redactor API"}
 @app.post(
     "/redact",
     summary="Redact PII from a DOCX file",
