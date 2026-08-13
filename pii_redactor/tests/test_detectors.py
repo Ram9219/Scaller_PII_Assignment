@@ -63,7 +63,7 @@ def test_address_fp(ner, context_detector, resolver):
     
     text3 = "Contact Address: B-201, Sunshine Apartments, MG Road, Bengaluru, 560001"
     # Will be caught by context block
-    ref3 = context_detector.detect_address_from_context(text3, loc)
+    ref3 = context_detector.detect_additional_entities_from_context(text3, loc)
     assert len([e for e in ref3 if e.entity_type == "PHYSICAL_OR_MAILING_ADDRESS"]) == 1
 
 # --- 3. DIN / PHONE OVERLAP ---
@@ -138,3 +138,48 @@ def test_aadhaar_context(regex, context_detector):
     cand2 = regex.detect(text2, loc, text2)
     ref2 = context_detector.refine_entities(cand2, text2)
     assert len([e for e in ref2 if e.entity_type == "AADHAAR"]) == 0
+# --- 9. PERSON CONTEXTUAL FALLBACK ---
+def test_person_list_fallback(context_detector, resolver):
+    loc = EntityLocation(paragraph_index=0)
+    
+    text1 = "KMPs including, Amit Kumar, Rajesh Sharma and Priya Mehta are also our Executive Directors."
+    cand1 = context_detector.detect_additional_entities_from_context(text1, loc)
+    res1 = resolver.resolve(cand1)
+    persons1 = [e for e in res1 if e.entity_type == "PERSON"]
+    assert len(persons1) == 3
+    names1 = [e.text for e in persons1]
+    assert "Amit Kumar" in names1
+    assert "Rajesh Sharma" in names1
+    assert "Priya Mehta" in names1
+    
+    text2 = "SMs including, Amit Kumar, CEO, Rajesh Sharma, CFO, and Priya Mehta, Technical Director, are also our KMPs."
+    cand2 = context_detector.detect_additional_entities_from_context(text2, loc)
+    res2 = resolver.resolve(cand2)
+    persons2 = [e for e in res2 if e.entity_type == "PERSON"]
+    assert len(persons2) == 3
+
+# --- 10. COMPANY CONTEXTUAL FALLBACK ---
+def test_company_context_fallback(context_detector, resolver):
+    loc = EntityLocation(paragraph_index=0)
+    
+    text = "ABC Research, pursuant to their consent letter dated November 26, 2025"
+    cand = context_detector.detect_additional_entities_from_context(text, loc)
+    res = resolver.resolve(cand)
+    comps = [e for e in res if e.entity_type == "COMPANY"]
+    assert len(comps) >= 1
+    assert comps[0].text == "ABC Research"
+
+# --- 11. NEGATIVE FALLBACK ---
+def test_negative_fallback(context_detector, resolver, ner):
+    loc = EntityLocation(paragraph_index=0)
+    
+    text = "The Offer and the Company are described below."
+    cand_ner = ner.detect(text, loc, text)
+    cand_ref = context_detector.refine_entities(cand_ner, text)
+    cand_add = context_detector.detect_additional_entities_from_context(text, loc)
+    
+    all_cand = cand_ref + cand_add
+    res = resolver.resolve(all_cand)
+    
+    assert len([e for e in res if e.entity_type == "PERSON"]) == 0
+    assert len([e for e in res if e.entity_type == "COMPANY"]) == 0

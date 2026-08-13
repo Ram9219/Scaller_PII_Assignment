@@ -108,7 +108,7 @@ class DocumentProcessor:
             for detector in self.detectors:
                 if hasattr(detector, 'refine_entities'):
                     candidates = detector.refine_entities(candidates, context)
-                    candidates.extend(detector.detect_address_from_context(text, location))
+                    candidates.extend(detector.detect_additional_entities_from_context(text, location))
                 else:
                     candidates.extend(detector.detect(text, location, context))
             

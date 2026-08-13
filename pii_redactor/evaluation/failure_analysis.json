@@ -1,23 +1,4 @@
 {
     "false_positives": [],
-    "false_negatives": [
-        {
-            "ground_truth_text": "Rakhi Girija Shetty",
-            "expected_type": "PERSON",
-            "location": "Paragraph 4",
-            "surrounding_context": "Certain of our KMPs including, Kushal Subbayya Hegde, Rajesh Kushal Hegde, Rohit Kushal Hegde and Rakhi Girija Shetty are also our Executive Directors."
-        },
-        {
-            "ground_truth_text": "Ganesh Prasad",
-            "expected_type": "PERSON",
-            "location": "Paragraph 5",
-            "surrounding_context": "Certain of our SMs including, Sandesh Bhagwat, CEO, Amod Joshi, CFO, Sarthak Malvadkar, CS and Compliance Officer, and Ganesh Prasad, Technical Director, are also our KMPs."
-        },
-        {
-            "ground_truth_text": "CareEdge Research",
-            "expected_type": "COMPANY",
-            "location": "Paragraph 9",
-            "surrounding_context": "CareEdge Research, pursuant to their consent letter dated November 26, 2025"
-        }
-    ]
+    "false_negatives": []
 }

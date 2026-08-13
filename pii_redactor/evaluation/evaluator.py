@@ -45,7 +45,7 @@ def evaluate(ground_truth_path: str, output_dir: str = "evaluation"):
         for detector in detectors:
             if hasattr(detector, 'refine_entities'):
                 candidates = detector.refine_entities(candidates, text)
-                candidates.extend(detector.detect_address_from_context(text, location))
+                candidates.extend(detector.detect_additional_entities_from_context(text, location))
             else:
                 candidates.extend(detector.detect(text, location, text))
         

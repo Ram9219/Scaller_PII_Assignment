@@ -151,42 +151,92 @@ class ContextDetector:
                 
         return final_entities
 
-    def detect_address_from_context(self, text: str, location: EntityLocation) -> List[PIIEntity]:
+    def detect_additional_entities_from_context(self, text: str, location: EntityLocation) -> List[PIIEntity]:
         entities = []
-        if "PHYSICAL_OR_MAILING_ADDRESS" not in ENABLED_ENTITIES:
-            return entities
-            
         text_lower = text.lower()
         
-        # 1. Prefix based detection
-        if self._has_keyword(text_lower, ["registered office:", "address:", "residential address:", "corporate office:", "contact address:"]):
-            parts = re.split(r'(?i)(?:registered office|contact address|address|residential address|corporate office)[:\s]+', text, 1)
-            if len(parts) > 1 and len(parts[1].strip()) > 10:
-                address_text = parts[1].strip()
-                start_idx = text.find(address_text)
+        # 1. Address fallback
+        if "PHYSICAL_OR_MAILING_ADDRESS" in ENABLED_ENTITIES:
+            if self._has_keyword(text_lower, ["registered office:", "address:", "residential address:", "corporate office:", "contact address:"]):
+                parts = re.split(r'(?i)(?:registered office|contact address|address|residential address|corporate office)[:\s]+', text, 1)
+                if len(parts) > 1 and len(parts[1].strip()) > 10:
+                    address_text = parts[1].strip()
+                    start_idx = text.find(address_text)
+                    entities.append(PIIEntity(
+                        text=address_text,
+                        entity_type="PHYSICAL_OR_MAILING_ADDRESS",
+                        start=start_idx,
+                        end=start_idx + len(address_text),
+                        confidence=CONFIDENCE_THRESHOLDS["CONTEXT_HIGH"],
+                        detector="context_block",
+                        location=location,
+                        source_context=text
+                    ))
+
+            elif self.pin_pattern.search(text) and self._has_word(text_lower, set(self.street_indicators)) and "," in text:
                 entities.append(PIIEntity(
-                    text=address_text,
+                    text=text.strip(),
                     entity_type="PHYSICAL_OR_MAILING_ADDRESS",
-                    start=start_idx,
-                    end=start_idx + len(address_text),
+                    start=text.find(text.strip()),
+                    end=text.find(text.strip()) + len(text.strip()),
                     confidence=CONFIDENCE_THRESHOLDS["CONTEXT_HIGH"],
-                    detector="context_block",
+                    detector="context_implicit",
                     location=location,
                     source_context=text
                 ))
-                return entities
 
-        # 2. Implicit detection based on PIN codes + Street indicators in a comma-separated block
-        if self.pin_pattern.search(text) and self._has_word(text_lower, set(self.street_indicators)) and "," in text:
-            entities.append(PIIEntity(
-                text=text.strip(),
-                entity_type="PHYSICAL_OR_MAILING_ADDRESS",
-                start=text.find(text.strip()),
-                end=text.find(text.strip()) + len(text.strip()),
-                confidence=CONFIDENCE_THRESHOLDS["CONTEXT_HIGH"],
-                detector="context_implicit",
-                location=location,
-                source_context=text
-            ))
+        # 2. PERSON fallback from list context
+        if "PERSON" in ENABLED_ENTITIES:
+            person_list_keywords = [
+                "kmps including", "kmp including", "sms including", 
+                "directors including", "promoters including",
+                "executive directors", "managing directors", 
+                "technical director", "ceo", "cfo", "company secretary", "compliance officer"
+            ]
+            if self._has_keyword(text_lower, person_list_keywords):
+                name_pattern = re.compile(r'\b[A-Z][a-zA-Z]+(?:\s+[A-Z][a-zA-Z]+){1,3}\b')
+                domain_terms = ["offer", "issue", "equity", "shares", "anchor", "investor", "building", 
+                                "process", "sebi", "icdr", "regulations", "companies", "exchange", 
+                                "director", "directors", "officer", "secretary", "kmp", "kmps", "manager",
+                                "promoter", "promoters", "chief", "executive", "financial", "contact", "person", "compliance"]
+                for match in name_pattern.finditer(text):
+                    name_str = match.group()
+                    if not self._has_word(name_str, set(domain_terms)):
+                        entities.append(PIIEntity(
+                            text=name_str,
+                            entity_type="PERSON",
+                            start=match.start(),
+                            end=match.end(),
+                            confidence=CONFIDENCE_THRESHOLDS["CONTEXT_HIGH"],
+                            detector="context_person_list",
+                            location=location,
+                            source_context=text
+                        ))
+
+        # 3. COMPANY fallback from specific contexts
+        if "COMPANY" in ENABLED_ENTITIES:
+            company_contexts = [
+                "pursuant to their consent letter", "consent letter from", 
+                "appointed by", "appointed as", "rating agency", 
+                "research agency", "registrar", "legal counsel", "auditor", "statutory auditor"
+            ]
+            if self._has_keyword(text_lower, company_contexts):
+                org_pattern = re.compile(r'\b[A-Z][a-zA-Z&]+(?:\s+[A-Z][a-zA-Z&]+){0,4}\b')
+                invalid_orgs = {"november", "december", "january", "february", "march", "april", "may", 
+                                "june", "july", "august", "september", "october", "date", "dated", "the",
+                                "chartered", "accountants", "accountant", "statutory", "auditors", "auditor"}
+                for match in org_pattern.finditer(text):
+                    org_str = match.group()
+                    if not self._has_word(org_str, invalid_orgs) and len(org_str) > 3:
+                        entities.append(PIIEntity(
+                            text=org_str,
+                            entity_type="COMPANY",
+                            start=match.start(),
+                            end=match.end(),
+                            confidence=CONFIDENCE_THRESHOLDS["CONTEXT_HIGH"],
+                            detector="context_org_fallback",
+                            location=location,
+                            source_context=text
+                        ))
             
         return entities
