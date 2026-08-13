@@ -95,6 +95,17 @@ class DocumentProcessor:
         doc = docx.Document(input_path)
         traverser = DocumentTraverser(doc)
         
+        # Stateful memoization dictionary: {normalized_text: entity_type}
+        memoized_entities = {}
+        
+        domain_terms_lower = [
+            "the company", "registered office", "annual report", "board meeting", 
+            "statutory auditor", "bankers", "summary", "unless", "there", "while",
+            "therefore", "certain", "business", "services", "packaging"
+        ]
+        
+        import re
+        
         for text, location, paragraph in traverser.traverse():
             self.stats["processed_paragraphs"] += 1
             
@@ -112,6 +123,20 @@ class DocumentProcessor:
                 else:
                     candidates.extend(detector.detect(text, location, context))
             
+            # Inject candidates from stateful memoization
+            for g_text, g_type in memoized_entities.items():
+                for match in re.finditer(r'\b' + re.escape(g_text) + r'\b', text):
+                    candidates.append(PIIEntity(
+                        text=g_text,
+                        entity_type=g_type,
+                        start=match.start(),
+                        end=match.end(),
+                        confidence=0.99,
+                        detector="stateful_memo",
+                        location=location,
+                        source_context=text
+                    ))
+            
             self.stats["total_candidates"] += len(candidates)
             for c in candidates:
                 if getattr(c, 'confidence', 1.0) < 0.7:
@@ -119,6 +144,17 @@ class DocumentProcessor:
                     
             resolved_entities = self.resolver.resolve(candidates)
             self.stats["rejected_by_resolver"] += (len(candidates) - len(resolved_entities))
+            
+            # Add strongly validated entities to the stateful memo
+            for ent in resolved_entities:
+                if getattr(ent, 'confidence', 1.0) >= 0.95 and ent.entity_type in ["PERSON", "COMPANY"]:
+                    words = ent.text.split()
+                    if len(words) >= 2:
+                        # Exclude if the entity is just a known domain term or generic phrase
+                        if ent.text.lower() not in domain_terms_lower:
+                            blacklist = ["the company", "registered office", "annual report", "board meeting", "statutory auditor"]
+                            if ent.text.lower() not in blacklist:
+                                memoized_entities[ent.text] = ent.entity_type
             
             if resolved_entities:
                 self._apply_replacements(paragraph, resolved_entities)

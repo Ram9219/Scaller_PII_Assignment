@@ -24,9 +24,9 @@ class DocumentTraverser:
                     header_text = headers[c_idx] if c_idx < len(headers) else ""
                     
                     for p_idx, paragraph in enumerate(cell.paragraphs):
-                        if id(paragraph) in self.seen_paragraphs:
+                        if paragraph._element in self.seen_paragraphs:
                             continue
-                        self.seen_paragraphs.add(id(paragraph))
+                        self.seen_paragraphs.add(paragraph._element)
                         
                         text = paragraph.text
                         if text.strip():
@@ -50,9 +50,9 @@ class DocumentTraverser:
         
         # 1. Main Document Paragraphs
         for i, paragraph in enumerate(self.doc.paragraphs):
-            if id(paragraph) in self.seen_paragraphs:
+            if paragraph._element in self.seen_paragraphs:
                 continue
-            self.seen_paragraphs.add(id(paragraph))
+            self.seen_paragraphs.add(paragraph._element)
             text = paragraph.text
             if text.strip():
                 yield text, EntityLocation(paragraph_index=i), paragraph
@@ -64,9 +64,9 @@ class DocumentTraverser:
         for s_idx, section in enumerate(self.doc.sections):
             # Header paragraphs
             for p_idx, paragraph in enumerate(section.header.paragraphs):
-                if id(paragraph) in self.seen_paragraphs:
+                if paragraph._element in self.seen_paragraphs:
                     continue
-                self.seen_paragraphs.add(id(paragraph))
+                self.seen_paragraphs.add(paragraph._element)
                 text = paragraph.text
                 if text.strip():
                     yield text, EntityLocation(paragraph_index=p_idx, is_header=True), paragraph
@@ -76,9 +76,9 @@ class DocumentTraverser:
             
             # Footer paragraphs
             for p_idx, paragraph in enumerate(section.footer.paragraphs):
-                if id(paragraph) in self.seen_paragraphs:
+                if paragraph._element in self.seen_paragraphs:
                     continue
-                self.seen_paragraphs.add(id(paragraph))
+                self.seen_paragraphs.add(paragraph._element)
                 text = paragraph.text
                 if text.strip():
                     yield text, EntityLocation(paragraph_index=p_idx, is_footer=True), paragraph

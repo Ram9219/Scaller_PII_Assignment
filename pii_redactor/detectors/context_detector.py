@@ -195,7 +195,9 @@ class ContextDetector:
                 "kmps including", "kmp including", "sms including", 
                 "directors including", "promoters including",
                 "executive directors", "managing directors", 
-                "technical director", "ceo", "cfo", "company secretary", "compliance officer"
+                "technical director", "ceo", "cfo", "company secretary", "compliance officer",
+                "individual promoters", "are the promoters", "are our promoters",
+                "her spouse", "his spouse", "her children", "his children"
             ]
             if self._has_keyword(text_lower, person_list_keywords):
                 name_pattern = re.compile(r'\b[A-Z][a-zA-Z]+(?:\s+[A-Z][a-zA-Z]+){1,3}\b')
@@ -223,11 +225,12 @@ class ContextDetector:
             company_contexts = [
                 "pursuant to their consent letter", "consent letter from", 
                 "appointed by", "appointed as", "rating agency", 
-                "research agency", "registrar", "legal counsel", "auditor", "statutory auditor"
+                "research agency", "statutory auditor",
+                "prepared by", "issued by", "report by"
             ]
             if self._has_keyword(text_lower, company_contexts):
                 # Only match actual capitalized words. If 'The ' precedes, it shouldn't be part of the match unless necessary.
-                org_pattern = re.compile(r'\b[A-Z][a-zA-Z&]+(?:\s+[A-Z][a-zA-Z&]+){0,4}\b')
+                org_pattern = re.compile(r'\b[A-Z][a-zA-Z&]+(?:\s+[A-Z][a-zA-Z&]+){1,4}\b')
                 invalid_orgs = {"november", "december", "january", "february", "march", "april", "may", 
                                 "june", "july", "august", "september", "october", "date", "dated", "the",
                                 "chartered", "accountants", "accountant", "statutory", "auditors", "auditor",

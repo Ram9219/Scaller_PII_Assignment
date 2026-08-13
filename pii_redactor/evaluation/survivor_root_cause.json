@@ -1,0 +1,28 @@
+[
+    {
+        "original_text": "Rakhi Girija Shetty",
+        "type": "PERSON",
+        "location": "Paragraph 166, Table cells",
+        "detected": false,
+        "detector_source": "spacy_ner (but classified as ORG/COMPANY_CANDIDATE)",
+        "confidence": 0.7,
+        "resolver_retained": false,
+        "replacement_generated": false,
+        "processor_received": false,
+        "target_type": "paragraph, table cell",
+        "exact_reason": "spaCy NER misclassifies 'Rakhi Girija Shetty' as ORG (mapped to COMPANY_CANDIDATE). Because it lacks corporate suffixes (like 'Limited') and strong adjacent company context words, the ContextDetector rejects it. It also fails to trigger the PERSON list fallback because it does not follow specific list keywords like 'kmps including'."
+    },
+    {
+        "original_text": "CareEdge Research",
+        "type": "COMPANY",
+        "location": "Paragraph 463, 464, Table cells",
+        "detected": false,
+        "detector_source": "spacy_ner (classified as ORG/COMPANY_CANDIDATE)",
+        "confidence": 0.7,
+        "resolver_retained": false,
+        "replacement_generated": false,
+        "processor_received": false,
+        "target_type": "paragraph, table cell",
+        "exact_reason": "spaCy NER detects 'CareEdge Research' as ORG (COMPANY_CANDIDATE). However, 'Research' is not in the hardcoded COMPANY_SUFFIXES list. Furthermore, the contextual clues in the surrounding text (like 'prepared by') are not in the company_contexts fallback list. Therefore, ContextDetector rejects the candidate."
+    }
+]
