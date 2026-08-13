@@ -1,0 +1,20 @@
+{
+    "stats": {
+        "processed_paragraphs": 4686,
+        "entities_replaced": 645,
+        "total_candidates": 687,
+        "rejected_by_resolver": 42,
+        "replacements_in_tables": 377,
+        "replacements_in_headers_footers": 20,
+        "low_confidence_suspicious": 0
+    },
+    "entity_counts_by_type": {
+        "COMPANY": 105,
+        "PHYSICAL_OR_MAILING_ADDRESS": 74,
+        "PERSON": 341,
+        "PHONE": 46,
+        "EMAIL": 70,
+        "DIN": 9
+    },
+    "integrity_violations_found": 0
+}

@@ -9,7 +9,15 @@ class DocumentProcessor:
         self.detectors = detectors
         self.resolver = resolver
         self.replacer = replacer
-        self.stats = {"processed_paragraphs": 0, "entities_replaced": 0}
+        self.stats = {
+            "processed_paragraphs": 0, 
+            "entities_replaced": 0,
+            "total_candidates": 0,
+            "rejected_by_resolver": 0,
+            "replacements_in_tables": 0,
+            "replacements_in_headers_footers": 0,
+            "low_confidence_suspicious": 0
+        }
         self.replaced_entities_log = []
 
     def _get_run_mapping(self, paragraph) -> Tuple[str, List[Tuple[int, int, int]]]:
@@ -41,6 +49,12 @@ class DocumentProcessor:
 
             replacement = self.replacer.get_replacement(ent.text, ent.entity_type)
             self.stats["entities_replaced"] += 1
+            
+            if hasattr(ent.location, 'table_index') and ent.location.table_index is not None:
+                self.stats["replacements_in_tables"] += 1
+            if getattr(ent.location, 'is_header', False) or getattr(ent.location, 'is_footer', False):
+                self.stats["replacements_in_headers_footers"] += 1
+                
             self.replaced_entities_log.append({
                 "type": ent.entity_type,
                 "original": ent.text,
@@ -98,7 +112,13 @@ class DocumentProcessor:
                 else:
                     candidates.extend(detector.detect(text, location, context))
             
+            self.stats["total_candidates"] += len(candidates)
+            for c in candidates:
+                if getattr(c, 'confidence', 1.0) < 0.7:
+                    self.stats["low_confidence_suspicious"] += 1
+                    
             resolved_entities = self.resolver.resolve(candidates)
+            self.stats["rejected_by_resolver"] += (len(candidates) - len(resolved_entities))
             
             if resolved_entities:
                 self._apply_replacements(paragraph, resolved_entities)

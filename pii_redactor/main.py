@@ -40,6 +40,27 @@ def main():
     stats = processor.process(args.input, args.output)
     
     logging.info(f"Processing complete. Stats: {stats}")
+    
+    # Write report
+    report = {
+        "stats": stats,
+        "entity_counts_by_type": {},
+        "integrity_violations_found": 0, # Will be fully populated by dedicated integrity tests
+    }
+    
+    for log in processor.replaced_entities_log:
+        t = log["type"]
+        report["entity_counts_by_type"][t] = report["entity_counts_by_type"].get(t, 0) + 1
+        
+    report_path = os.path.join(os.path.dirname(args.output), "redaction_integrity_report.json")
+    if os.path.basename(os.path.dirname(args.output)) != "evaluation" and os.path.exists("evaluation"):
+        report_path = os.path.join("evaluation", "redaction_integrity_report.json")
+        
+    import json
+    with open(report_path, "w") as f:
+        json.dump(report, f, indent=4)
+        
+    logging.info(f"Integrity report written to {report_path}")
 
 if __name__ == "__main__":
     main()

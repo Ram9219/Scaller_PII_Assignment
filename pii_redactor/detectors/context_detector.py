@@ -66,9 +66,15 @@ class ContextDetector:
                     ent.confidence = CONFIDENCE_THRESHOLDS["CONTEXT_HIGH"]
 
             elif ent.entity_type == "COMPANY_CANDIDATE":
-                if self._has_keyword(ent.text, COMPANY_SUFFIXES) or self._has_keyword(surrounding, ["company", "organization", "ltd"]):
+                # Restrict promotion: requires corporate suffix in the entity itself OR strong adjacent context
+                if self._has_keyword(ent.text, COMPANY_SUFFIXES):
                     ent.entity_type = "COMPANY"
                     ent.confidence = CONFIDENCE_THRESHOLDS["CONTEXT_HIGH"]
+                elif self._has_keyword(surrounding, ["company:", "organization:", "manager:", "registrar:"]):
+                    ent.entity_type = "COMPANY"
+                    ent.confidence = CONFIDENCE_THRESHOLDS["CONTEXT_HIGH"]
+                else:
+                    continue # Reject generic ORG without strong evidence
             
             elif ent.entity_type == "ADDRESS_CANDIDATE":
                 # Must not promote just because "city" is in the sentence. Need strong labels or PIN.
@@ -82,19 +88,38 @@ class ContextDetector:
                 if has_label or (has_pin and has_street) or (is_multi_line and (has_pin or has_street)):
                     ent.entity_type = "PHYSICAL_OR_MAILING_ADDRESS"
                     ent.confidence = CONFIDENCE_THRESHOLDS["CONTEXT_HIGH"]
+                else:
+                    continue # Reject standalone city/location
                     
             elif ent.entity_type == "PERSON":
                 # Filter out obvious false positives
                 if self._has_word(ent.text, self.person_stopwords):
                     continue
                 
+                # Reject if it's a generic capitalized term or starts with "The "
+                if ent.text.lower().startswith("the ") or len(ent.text.split()) == 1:
+                    # Single words like "Offer" or phrases like "The Offer" are highly suspicious without context
+                    has_strong_context = self._has_keyword(surrounding, PERSON_PREFIXES) or self._has_keyword(surrounding, PERSON_TITLES)
+                    if not has_strong_context:
+                        continue # Reject generic term
+
                 # Contextual rejection for technical identifiers without person titles
                 if self._has_word(surrounding, self.tech_stopwords):
                     if not (self._has_keyword(surrounding, PERSON_PREFIXES) or self._has_keyword(surrounding, PERSON_TITLES)):
                         continue # Reject
-                        
+                
+                # Reject known legal/financial non-PII terms
+                domain_terms = ["offer", "issue", "equity", "shares", "anchor", "investor", "building", "process", "sebi", "icdr", "regulations", "companies act", "exchange", "qib", "nii", "rii", "amount", "percentage", "page"]
+                if self._has_keyword(ent.text, domain_terms):
+                    continue
+
                 if self._has_keyword(surrounding, PERSON_PREFIXES) or self._has_keyword(surrounding, PERSON_TITLES):
                     ent.confidence = CONFIDENCE_THRESHOLDS["CONTEXT_HIGH"]
+                elif len(ent.text.split()) >= 2 and ent.text.istitle():
+                    # If it's a multi-word Title Cased entity that survived the filters, it's plausible.
+                    pass
+                else:
+                    continue # Reject low-confidence candidates with no context
 
             elif ent.entity_type == "PHONE":
                 # A 10-12 digit number by itself must NOT automatically be classified as PHONE.
