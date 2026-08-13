@@ -1,0 +1,24 @@
+pii_redactor/
+├── main.py
+├── requirements.txt
+├── README.md
+│
+├── detectors/
+│   ├── regex_detector.py
+│   ├── context_detector.py
+│   └── ner_detector.py
+│
+├── core/
+│   ├── entities.py
+│   ├── resolver.py
+│   └── replacement.py
+│
+├── document/
+│   └── processor.py
+│
+├── evaluation/
+│   ├── evaluator.py
+│   └── ground_truth.example.json
+│
+└── tests/
+    └── test_detectors.py

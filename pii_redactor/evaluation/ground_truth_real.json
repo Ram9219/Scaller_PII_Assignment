@@ -1,0 +1,81 @@
+[
+    {
+        "text": "Dated December 10, 2025",
+        "entities": []
+    },
+    {
+        "text": "(2) The UPI mandate end time and date shall be at 5:00 p.m. on Bid/Offer Closing Day.",
+        "entities": []
+    },
+    {
+        "text": "Contact Person: Sarthak Malvadkar, Company Secretary and Compliance Officer; Telephone: + 91 20 4505 3237;",
+        "entities": [
+            {"type": "PERSON", "text": "Sarthak Malvadkar"},
+            {"type": "PHONE", "text": "+ 91 20 4505 3237"}
+        ]
+    },
+    {
+        "text": "The Offer has been authorized pursuant to the resolution passed by our Board dated May 6, 2025 and the Fresh Issue has been authorized by our Shareholders pursuant to a special resolution passed on May 6, 2025.",
+        "entities": []
+    },
+    {
+        "text": "Certain of our KMPs including, Kushal Subbayya Hegde, Rajesh Kushal Hegde, Rohit Kushal Hegde and Rakhi Girija Shetty are also our Executive Directors.",
+        "entities": [
+            {"type": "PERSON", "text": "Kushal Subbayya Hegde"},
+            {"type": "PERSON", "text": "Rajesh Kushal Hegde"},
+            {"type": "PERSON", "text": "Rohit Kushal Hegde"},
+            {"type": "PERSON", "text": "Rakhi Girija Shetty"}
+        ]
+    },
+    {
+        "text": "Certain of our SMs including, Sandesh Bhagwat, CEO, Amod Joshi, CFO, Sarthak Malvadkar, CS and Compliance Officer, and Ganesh Prasad, Technical Director, are also our KMPs.",
+        "entities": [
+            {"type": "PERSON", "text": "Sandesh Bhagwat"},
+            {"type": "PERSON", "text": "Amod Joshi"},
+            {"type": "PERSON", "text": "Sarthak Malvadkar"},
+            {"type": "PERSON", "text": "Ganesh Prasad"}
+        ]
+    },
+    {
+        "text": "As certified by Kirtane & Pandit LLP, Chartered Accountants, our Statutory Auditors, by way of their certificate dated December 10, 2025.",
+        "entities": [
+            {"type": "COMPANY", "text": "Kirtane & Pandit LLP"}
+        ]
+    },
+    {
+        "text": "KSH International Private Limited",
+        "entities": [
+            {"type": "COMPANY", "text": "KSH International Private Limited"}
+        ]
+    },
+    {
+        "text": "Up to [\u25cf] Equity Shares of face value of \u20b95 each aggregating up to \u20b94,200.00 million",
+        "entities": []
+    },
+    {
+        "text": "CareEdge Research, pursuant to their consent letter dated November 26, 2025",
+        "entities": [
+            {"type": "COMPANY", "text": "CareEdge Research"}
+        ]
+    },
+    {
+        "text": "Registered Office: 201, 2nd Floor, Sai Icon, Behind Sai Radhe, Kennedy Road, Pune 411001, Maharashtra, India",
+        "entities": [
+            {"type": "PHYSICAL_OR_MAILING_ADDRESS", "text": "201, 2nd Floor, Sai Icon, Behind Sai Radhe, Kennedy Road, Pune 411001, Maharashtra, India"}
+        ]
+    },
+    {
+        "text": "Email: investors@kshinternational.com",
+        "entities": [
+            {"type": "EMAIL", "text": "investors@kshinternational.com"}
+        ]
+    },
+    {
+        "text": "Website: www.kshinternational.com",
+        "entities": []
+    },
+    {
+        "text": "CIN: U27101PN1979PTC022204",
+        "entities": []
+    }
+]

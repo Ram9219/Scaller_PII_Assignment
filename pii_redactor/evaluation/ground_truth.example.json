@@ -1,0 +1,197 @@
+[
+    {
+        "text": "The corporate office is located at 123 Main St, Pune, 411001",
+        "entities": [{"type": "PHYSICAL_OR_MAILING_ADDRESS", "text": "123 Main St, Pune, 411001"}]
+    },
+    {
+        "text": "Registered Office: 456 Industrial Phase 2, Mumbai, 400018",
+        "entities": [{"type": "PHYSICAL_OR_MAILING_ADDRESS", "text": "456 Industrial Phase 2, Mumbai, 400018"}]
+    },
+    {
+        "text": "Our factory is at Plot No 12, MIDC, Andheri, Mumbai, 400093",
+        "entities": [{"type": "PHYSICAL_OR_MAILING_ADDRESS", "text": "Plot No 12, MIDC, Andheri, Mumbai, 400093"}]
+    },
+    {
+        "text": "Contact Address: B-201, Sunshine Apartments, MG Road, Bengaluru, 560001",
+        "entities": [{"type": "PHYSICAL_OR_MAILING_ADDRESS", "text": "B-201, Sunshine Apartments, MG Road, Bengaluru, 560001"}]
+    },
+    {
+        "text": "He lives at 88 Residency Rd, Delhi, 110001.",
+        "entities": [{"type": "PHYSICAL_OR_MAILING_ADDRESS", "text": "88 Residency Rd, Delhi, 110001"}]
+    },
+    {
+        "text": "Contact Rajesh Kumar at rajesh.k@example.com or +91 9876543210 for details.",
+        "entities": [
+            {"type": "PERSON", "text": "Rajesh Kumar"},
+            {"type": "EMAIL", "text": "rajesh.k@example.com"},
+            {"type": "PHONE", "text": "+91 9876543210"}
+        ]
+    },
+    {
+        "text": "Mr. Anil Sharma, our Executive Director, can be reached at anil.sharma@domain.in or 022-23456789.",
+        "entities": [
+            {"type": "PERSON", "text": "Anil Sharma"},
+            {"type": "EMAIL", "text": "anil.sharma@domain.in"},
+            {"type": "PHONE", "text": "022-23456789"}
+        ]
+    },
+    {
+        "text": "Email your queries to info@company.co.in or call 1800-123-4567.",
+        "entities": [
+            {"type": "EMAIL", "text": "info@company.co.in"},
+            {"type": "PHONE", "text": "1800-123-4567"}
+        ]
+    },
+    {
+        "text": "The details are sent to support.team@service.com and +91-9988776655.",
+        "entities": [
+            {"type": "EMAIL", "text": "support.team@service.com"},
+            {"type": "PHONE", "text": "+91-9988776655"}
+        ]
+    },
+    {
+        "text": "Direct line is +44 20 7946 0958 and hr@global.org.",
+        "entities": [
+            {"type": "PHONE", "text": "+44 20 7946 0958"},
+            {"type": "EMAIL", "text": "hr@global.org"}
+        ]
+    },
+    {
+        "text": "The Board of Directors of XYZ Technologies Limited",
+        "entities": [{"type": "COMPANY", "text": "XYZ Technologies Limited"}]
+    },
+    {
+        "text": "ABC Manufacturing Private Limited reported a profit.",
+        "entities": [{"type": "COMPANY", "text": "ABC Manufacturing Private Limited"}]
+    },
+    {
+        "text": "Global Services Ltd will hold a meeting.",
+        "entities": [{"type": "COMPANY", "text": "Global Services Ltd"}]
+    },
+    {
+        "text": "TechCorp Inc. signed the agreement.",
+        "entities": [{"type": "COMPANY", "text": "TechCorp Inc."}]
+    },
+    {
+        "text": "NextGen Solutions LLC is based in India.",
+        "entities": [{"type": "COMPANY", "text": "NextGen Solutions LLC"}]
+    },
+    {
+        "text": "DOB: 15/08/1980",
+        "entities": [{"type": "DATE_OF_BIRTH", "text": "15/08/1980"}]
+    },
+    {
+        "text": "Date of birth of the promoter is 01-12-1975.",
+        "entities": [{"type": "DATE_OF_BIRTH", "text": "01-12-1975"}]
+    },
+    {
+        "text": "born on 1990/05/20.",
+        "entities": [{"type": "DATE_OF_BIRTH", "text": "1990/05/20"}]
+    },
+    {
+        "text": "His birth date is 23/04/1985.",
+        "entities": [{"type": "DATE_OF_BIRTH", "text": "23/04/1985"}]
+    },
+    {
+        "text": "DOB 12.11.1992.",
+        "entities": [{"type": "DATE_OF_BIRTH", "text": "12.11.1992"}]
+    },
+    {
+        "text": "His Aadhaar number is 1234 5678 9012 and DIN is 12345678.",
+        "entities": [
+            {"type": "AADHAAR", "text": "1234 5678 9012"},
+            {"type": "DIN", "text": "12345678"}
+        ]
+    },
+    {
+        "text": "Aadhaar: 9876-5432-1098, DIN: 87654321.",
+        "entities": [
+            {"type": "AADHAAR", "text": "9876-5432-1098"},
+            {"type": "DIN", "text": "87654321"}
+        ]
+    },
+    {
+        "text": "Her DIN is 11223344 and Aadhaar is 111122223333.",
+        "entities": [
+            {"type": "DIN", "text": "11223344"},
+            {"type": "AADHAAR", "text": "111122223333"}
+        ]
+    },
+    {
+        "text": "Update your DIN 99887766 and Aadhaar 4444 5555 6666.",
+        "entities": [
+            {"type": "DIN", "text": "99887766"},
+            {"type": "AADHAAR", "text": "4444 5555 6666"}
+        ]
+    },
+    {
+        "text": "DIN: 10203040, Aadhaar: 123412341234",
+        "entities": [
+            {"type": "DIN", "text": "10203040"},
+            {"type": "AADHAAR", "text": "123412341234"}
+        ]
+    },
+    {
+        "text": "My IP is 192.168.1.1 and SSN is 123-45-6789.",
+        "entities": [
+            {"type": "IP_ADDRESS", "text": "192.168.1.1"},
+            {"type": "SSN", "text": "123-45-6789"}
+        ]
+    },
+    {
+        "text": "Connect to 10.0.0.1. SSN: 987-65-4321.",
+        "entities": [
+            {"type": "IP_ADDRESS", "text": "10.0.0.1"},
+            {"type": "SSN", "text": "987-65-4321"}
+        ]
+    },
+    {
+        "text": "Server 172.16.254.1, SSN 111-22-3333.",
+        "entities": [
+            {"type": "IP_ADDRESS", "text": "172.16.254.1"},
+            {"type": "SSN", "text": "111-22-3333"}
+        ]
+    },
+    {
+        "text": "IP 8.8.8.8 with SSN 444-55-6666.",
+        "entities": [
+            {"type": "IP_ADDRESS", "text": "8.8.8.8"},
+            {"type": "SSN", "text": "444-55-6666"}
+        ]
+    },
+    {
+        "text": "Log IP: 127.0.0.1, User SSN: 555-66-7777.",
+        "entities": [
+            {"type": "IP_ADDRESS", "text": "127.0.0.1"},
+            {"type": "SSN", "text": "555-66-7777"}
+        ]
+    },
+    {
+        "text": "Paid with card 4532 1234 1234 1234.",
+        "entities": []
+    },
+    {
+        "text": "Another invalid card 1234 5678 1234 5678.",
+        "entities": []
+    },
+    {
+        "text": "NEGATIVE EXAMPLES: Financial numbers like 1,200,000 or 1234567890 should not be phones.",
+        "entities": []
+    },
+    {
+        "text": "Normal dates like 10/12/2024 or December 10, 2025 are just dates.",
+        "entities": []
+    },
+    {
+        "text": "Random words like Apple, Orange, Banana.",
+        "entities": []
+    },
+    {
+        "text": "City names like Mumbai, Pune, Delhi without address context.",
+        "entities": []
+    },
+    {
+        "text": "Aadhaar is a card. Provide your PAN and DIN and GSTIN.",
+        "entities": []
+    }
+]
