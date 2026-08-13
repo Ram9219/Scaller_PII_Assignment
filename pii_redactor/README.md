@@ -43,10 +43,44 @@ To redact a document:
 python main.py -i "Red Herring Prospectus.docx" -o "Redacted_Prospectus.docx"
 ```
 
-To run the evaluation:
+## Evaluation
+
+To run evaluations:
 ```bash
-python evaluation/evaluator.py
+python evaluation/evaluator.py --gt evaluation/ground_truth.example.json
 ```
+
+## API and Deployment
+
+The PII Redactor provides a production-ready FastAPI service. 
+
+### Architecture
+Client -> FastAPI -> Existing V7 Redaction Engine -> Redacted DOCX
+
+### Local API Startup
+```bash
+uvicorn api:app --reload
+```
+The API documentation will be available at `http://localhost:8000/docs`.
+
+### Endpoints
+- `GET /health`: Health check status.
+- `POST /redact`: Upload a `.docx` file using `multipart/form-data` with the key `file`. Returns the redacted `.docx` file.
+
+**Example cURL Request**:
+```bash
+curl -X POST \
+  -F "file=@Red Herring Prospectus.docx" \
+  http://localhost:8000/redact \
+  --output Redacted_Prospectus.docx
+```
+
+### Future Enhancements
+Currently, embedded image/scanned-document PII is outside the implemented text-redaction scope. Future OCR-based enhancements are planned to support image-based redaction.
+
+### Docker & Render Deployment
+The application includes a `Dockerfile` ready for deployment on platforms like Render.
+It uses Python 3.11, automatically installs required dependencies including the `spaCy` NLP model, and securely manages temporary file lifecycles without persisting uploaded data.
 
 ## Known Limitations
 - The `python-docx` run-level replacement approach correctly preserves styles, but it assumes the string index offsets match exactly when entities overlap across multiple small runs. The algorithm implements a robust per-run edit list applied right-to-left to mitigate offset shifts.
