@@ -51,48 +51,59 @@ class EntityResolver:
 
         resolved = []
         for current in unique_entities:
-            overlap = False
-            for prev in resolved:
-                if self._is_overlap(current, prev):
-                    overlap = True
-                    # Check span containment
-                    prev_contains_curr = prev.start <= current.start and prev.end >= current.end
-                    curr_contains_prev = current.start <= prev.start and current.end >= prev.end
-                    
-                    if current.confidence > prev.confidence:
-                        resolved.remove(prev)
-                        resolved.append(current)
-                        resolved.sort(key=lambda x: (x.start, -(x.end - x.start)))
-                    elif current.confidence < prev.confidence:
-                        pass # prev wins
-                    else:
-                        # Confidence is equal. 
-                        # 1. Span containment
-                        if prev_contains_curr and not curr_contains_prev:
-                            pass # prev wins
-                        elif curr_contains_prev and not prev_contains_curr:
-                            resolved.remove(prev)
-                            resolved.append(current)
-                            resolved.sort(key=lambda x: (x.start, -(x.end - x.start)))
-                        else:
-                            # 2. Priority
-                            p_curr = priority.get(current.entity_type, 0)
-                            p_prev = priority.get(prev.entity_type, 0)
-                            if p_curr > p_prev:
-                                resolved.remove(prev)
-                                resolved.append(current)
-                                resolved.sort(key=lambda x: (x.start, -(x.end - x.start)))
-                            elif p_curr < p_prev:
-                                pass # prev wins
-                            else:
-                                # 3. Length
-                                if (current.end - current.start) > (prev.end - prev.start):
-                                    resolved.remove(prev)
-                                    resolved.append(current)
-                                    resolved.sort(key=lambda x: (x.start, -(x.end - x.start)))
-                    break
+            # We want to insert 'current' into 'resolved' if it wins all overlaps.
+            # If it overlaps with multiple existing, it must beat ALL of them to replace them.
+            # Actually, standard approach:
+            # 1. Find all overlapping entities in 'resolved'.
+            # 2. Check if 'current' is better than ALL of them.
+            # 3. If so, remove them and add 'current'. Otherwise, drop 'current'.
             
-            if not overlap:
+            overlaps = [prev for prev in resolved if self._is_overlap(current, prev)]
+            
+            if not overlaps:
                 resolved.append(current)
-
+                continue
+                
+            # Determine if current beats ALL overlaps
+            current_wins_all = True
+            for prev in overlaps:
+                prev_contains_curr = prev.start <= current.start and prev.end >= current.end
+                curr_contains_prev = current.start <= prev.start and current.end >= prev.end
+                
+                p_curr = priority.get(current.entity_type, 0)
+                p_prev = priority.get(prev.entity_type, 0)
+                
+                # Win conditions
+                if current.confidence > prev.confidence:
+                    continue # beats this one
+                elif current.confidence < prev.confidence:
+                    current_wins_all = False
+                    break
+                else:
+                    # Equal confidence
+                    if prev_contains_curr and not curr_contains_prev:
+                        current_wins_all = False
+                        break
+                    elif curr_contains_prev and not prev_contains_curr:
+                        continue # beats this one
+                    else:
+                        if p_curr > p_prev:
+                            continue # beats this one
+                        elif p_curr < p_prev:
+                            current_wins_all = False
+                            break
+                        else:
+                            # Length
+                            if (current.end - current.start) > (prev.end - prev.start):
+                                continue
+                            else:
+                                current_wins_all = False
+                                break
+                                
+            if current_wins_all:
+                for prev in overlaps:
+                    resolved.remove(prev)
+                resolved.append(current)
+                resolved.sort(key=lambda x: (x.start, -(x.end - x.start)))
+                
         return resolved

@@ -21,7 +21,7 @@ class ContextDetector:
         # Address regex patterns for PIN code and block structure
         self.pin_pattern = re.compile(r'\b\d{6}\b')
         self.street_indicators = ["st", "street", "rd", "road", "marg", "lane", "nagar", "apartment", "apt", "building", "bldg", "floor", "flr", "plot", "phase", "block"]
-        self.address_labels = ["address:", "address :", "registered office", "corporate office", "residential", "mailing", "office address", "contact address"]
+        self.address_labels = ["address:", "address :", "registered office", "corporate office", "residential", "mailing", "office address", "contact address", "located at", "situated at", "facility at", "unit at"]
 
     def _has_keyword(self, text: str, keywords: List[str]) -> bool:
         text_lower = text.lower()
@@ -65,7 +65,13 @@ class ContextDetector:
                     ent.entity_type = "DATE_OF_BIRTH"
                     ent.confidence = CONFIDENCE_THRESHOLDS["CONTEXT_HIGH"]
 
-            elif ent.entity_type == "COMPANY_CANDIDATE":
+            # Define domain terms for filtering out generic financial/legal jargon
+            domain_terms = ["offer", "issue", "equity", "shares", "anchor", "investor", "building", "process", "sebi", "icdr", "regulations", "companies act", "exchange", "qib", "nii", "rii", "amount", "percentage", "page", "bidder", "bidders", "promoter", "promoters", "director", "directors", "mutual funds", "mutual fund", "manager", "management", "personnel", "group", "registrar", "book running lead managers"]
+
+            if ent.entity_type == "COMPANY_CANDIDATE":
+                if self._has_keyword(ent.text, domain_terms):
+                    continue # Reject generic terms
+                    
                 # Restrict promotion: requires corporate suffix in the entity itself OR strong adjacent context
                 if self._has_keyword(ent.text, COMPANY_SUFFIXES):
                     ent.entity_type = "COMPANY"
@@ -108,8 +114,6 @@ class ContextDetector:
                     if not (self._has_keyword(surrounding, PERSON_PREFIXES) or self._has_keyword(surrounding, PERSON_TITLES)):
                         continue # Reject
                 
-                # Reject known legal/financial non-PII terms
-                domain_terms = ["offer", "issue", "equity", "shares", "anchor", "investor", "building", "process", "sebi", "icdr", "regulations", "companies act", "exchange", "qib", "nii", "rii", "amount", "percentage", "page"]
                 if self._has_keyword(ent.text, domain_terms):
                     continue
 
@@ -197,8 +201,8 @@ class ContextDetector:
                 name_pattern = re.compile(r'\b[A-Z][a-zA-Z]+(?:\s+[A-Z][a-zA-Z]+){1,3}\b')
                 domain_terms = ["offer", "issue", "equity", "shares", "anchor", "investor", "building", 
                                 "process", "sebi", "icdr", "regulations", "companies", "exchange", 
-                                "director", "directors", "officer", "secretary", "kmp", "kmps", "manager",
-                                "promoter", "promoters", "chief", "executive", "financial", "contact", "person", "compliance"]
+                                "director", "directors", "officer", "secretary", "kmp", "kmps", "manager", "management",
+                                "promoter", "promoters", "chief", "executive", "financial", "contact", "person", "compliance", "bidder", "bidders", "mutual funds", "mutual fund", "personnel", "group", "registrar"]
                 for match in name_pattern.finditer(text):
                     name_str = match.group()
                     if not self._has_word(name_str, set(domain_terms)):
@@ -215,28 +219,57 @@ class ContextDetector:
 
         # 3. COMPANY fallback from specific contexts
         if "COMPANY" in ENABLED_ENTITIES:
+            # Fallback A: Context keywords
             company_contexts = [
                 "pursuant to their consent letter", "consent letter from", 
                 "appointed by", "appointed as", "rating agency", 
                 "research agency", "registrar", "legal counsel", "auditor", "statutory auditor"
             ]
             if self._has_keyword(text_lower, company_contexts):
+                # Only match actual capitalized words. If 'The ' precedes, it shouldn't be part of the match unless necessary.
                 org_pattern = re.compile(r'\b[A-Z][a-zA-Z&]+(?:\s+[A-Z][a-zA-Z&]+){0,4}\b')
                 invalid_orgs = {"november", "december", "january", "february", "march", "april", "may", 
                                 "june", "july", "august", "september", "october", "date", "dated", "the",
-                                "chartered", "accountants", "accountant", "statutory", "auditors", "auditor"}
+                                "chartered", "accountants", "accountant", "statutory", "auditors", "auditor",
+                                "bidder", "bidders", "promoter", "promoters", "director", "directors", 
+                                "mutual", "funds", "manager", "management", "personnel", "group", "registrar",
+                                "offer", "issue", "equity", "shares", "anchor", "investor", "building", "process"}
                 for match in org_pattern.finditer(text):
                     org_str = match.group()
+                    
+                    # Strip leading 'The ' from the match itself if it got grouped
+                    if org_str.lower().startswith("the "):
+                        org_str = org_str[4:]
+                        start_idx = match.start() + 4
+                    else:
+                        start_idx = match.start()
+                        
                     if not self._has_word(org_str, invalid_orgs) and len(org_str) > 3:
                         entities.append(PIIEntity(
                             text=org_str,
                             entity_type="COMPANY",
-                            start=match.start(),
-                            end=match.end(),
+                            start=start_idx,
+                            end=start_idx + len(org_str),
                             confidence=CONFIDENCE_THRESHOLDS["CONTEXT_HIGH"],
                             detector="context_org_fallback",
                             location=location,
                             source_context=text
                         ))
+                        
+            # Fallback B: Strong Company Suffixes
+            # If a phrase ends with "Private Limited", "Limited", "LLP", "PLC", "Inc.", etc.
+            suffix_pattern = re.compile(r'\b([A-Z][a-zA-Z&]*(?:\s+[A-Z][a-zA-Z&]*){0,4}\s+(?:Private Limited|Limited|LLP|Inc\.|Corp\.|Corporation|LLC))\b')
+            for match in suffix_pattern.finditer(text):
+                org_str = match.group(1)
+                entities.append(PIIEntity(
+                    text=org_str,
+                    entity_type="COMPANY",
+                    start=match.start(1),
+                    end=match.end(1),
+                    confidence=CONFIDENCE_THRESHOLDS["CONTEXT_HIGH"],
+                    detector="context_suffix_fallback",
+                    location=location,
+                    source_context=text
+                ))
             
         return entities

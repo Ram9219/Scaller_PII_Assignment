@@ -36,7 +36,8 @@ DOB_CONTEXT_WORDS = [
 ADDRESS_CONTEXT_WORDS = [
     "address", "registered office", "corporate office", "residential", 
     "mailing", "office address", "r/o", "s/o", "d/o", "w/o", "street",
-    "road", "village", "taluka", "district", "city", "state", "pin", "pincode"
+    "road", "village", "taluka", "district", "city", "state", "pin", "pincode",
+    "located at", "situated at"
 ]
 
 # Context Keywords for Company

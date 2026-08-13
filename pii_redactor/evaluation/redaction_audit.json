@@ -1,0 +1,85 @@
+{
+    "total_original_pii_candidates": 449,
+    "redacted_candidates": 442,
+    "coverage": 0.9844097995545658,
+    "surviving_pii": [
+        {
+            "original_text": "Pune",
+            "type": "PHYSICAL_OR_MAILING_ADDRESS",
+            "location": "EntityLocation(paragraph_index=48, table_index=None, row_index=None, cell_index=None, is_header=False, is_footer=False)",
+            "redacted_text_at_same_location": "Unless the context otherwise indicates, all references to \u201cwe\u201d, \u201cus\u201d, \u201cour\u201d, \u201cthe Company\u201d, and \u201cour Company\u201d, are references to Choudhury, Bakshi and Maharaj, a company incorporated on July 30, 1979 under the Companies Act, 1956 and having its Registered Office at 11/3, 11/4 and 11/5, Village Birdewadi, Dalbir Khosla, Balay LLC \u2013 410 501, Maharashtra, 71/822, Gandhi Chowk, Dehri 383465 and its Varughese-Seth at 201, Tower 2, Montreal Business Centre, Off Pallod Farms, Baner, Pune \u2013 411 045, Maharashtra, 71/822, Gandhi Chowk, Dehri 383465.",
+            "detector_source": "spacy_ner",
+            "confidence": 0.92
+        },
+        {
+            "original_text": "Supa",
+            "type": "PHYSICAL_OR_MAILING_ADDRESS",
+            "location": "EntityLocation(paragraph_index=400, table_index=None, row_index=None, cell_index=None, is_header=False, is_footer=False)",
+            "redacted_text_at_same_location": "Our manufacturing unit at 99, Borah Zila, Guna 251354, 49/80, Mistry Circle, Guntur-118244 (formerly 487, Behl Road, Bhusawal-005242) in Maharashtra was originally anticipated to commence operations by March 31, 2025, however, we have experienced delays in setting up our Supa Facility and operations have commenced in September 2025. Further, the enhancement in the annual installed capacity from 8,800 MT to 12,000 MT at our manufacturing unit at 99, Borah Zila, Guna 251354, 49/80, Mistry Circle, Guntur-118244, led to an increase in cost of the project. The delay in project completion was caused by delay in activities like placement of purchase orders, delivery and installation of plant and machinery, mechanical, electrical and plumbing, utility and other equipment. We may face further delays or cost overruns in completion of further phases of construction of our Supa Facility in the future on account of several factors, including delays in receiving governmental, statutory, and other regulatory approvals and permits, and delays in or non-delivery of construction equipment by suppliers, among others.",
+            "detector_source": "spacy_ner",
+            "confidence": 0.92
+        },
+        {
+            "original_text": "Supa",
+            "type": "PHYSICAL_OR_MAILING_ADDRESS",
+            "location": "EntityLocation(paragraph_index=400, table_index=None, row_index=None, cell_index=None, is_header=False, is_footer=False)",
+            "redacted_text_at_same_location": "Our manufacturing unit at 99, Borah Zila, Guna 251354, 49/80, Mistry Circle, Guntur-118244 (formerly 487, Behl Road, Bhusawal-005242) in Maharashtra was originally anticipated to commence operations by March 31, 2025, however, we have experienced delays in setting up our Supa Facility and operations have commenced in September 2025. Further, the enhancement in the annual installed capacity from 8,800 MT to 12,000 MT at our manufacturing unit at 99, Borah Zila, Guna 251354, 49/80, Mistry Circle, Guntur-118244, led to an increase in cost of the project. The delay in project completion was caused by delay in activities like placement of purchase orders, delivery and installation of plant and machinery, mechanical, electrical and plumbing, utility and other equipment. We may face further delays or cost overruns in completion of further phases of construction of our Supa Facility in the future on account of several factors, including delays in receiving governmental, statutory, and other regulatory approvals and permits, and delays in or non-delivery of construction equipment by suppliers, among others.",
+            "detector_source": "spacy_ner",
+            "confidence": 0.92
+        },
+        {
+            "original_text": "Supa Facility",
+            "type": "PERSON",
+            "location": "EntityLocation(paragraph_index=401, table_index=None, row_index=None, cell_index=None, is_header=False, is_footer=False)",
+            "redacted_text_at_same_location": "Additionally, an amount of \u20b9 783.77 million from the Net Proceeds is intended to be utilised towards the Phase II Expansion at our Tanvi Mutti. For further details, see \u201cObjects of the Offer \u2013 Funding the capital expenditure requirements of our Company towards: (i) purchasing and setting up of new machinery for expansion at our Supa Facility (\u201cPhase II Expansion at our Supa Facility\u201d); and (ii) purchasing and setting up of new machinery at Unit 2 in 01/12, Banik Circle, Ballia-620450, Balay LLC in Bala, Issac and Saini\u201d on page 114. Any failure to complete the Phase II Expansion of this facility in a timely manner, and within budget, or at all, and any failure of receipt of the required approvals required for operation of the Supa Facility, could have an adverse impact on our business, results of operations, financial condition, and cash flows.",
+            "detector_source": "spacy_ner",
+            "confidence": 0.7
+        },
+        {
+            "original_text": "Supa",
+            "type": "PHYSICAL_OR_MAILING_ADDRESS",
+            "location": "EntityLocation(paragraph_index=534, table_index=None, row_index=None, cell_index=None, is_header=False, is_footer=False)",
+            "redacted_text_at_same_location": "As of the date of this Red Herring Prospectus, we primarily manufacture our products at our four manufacturing facilities, one at Taloja (Raigad), Maharashtra, and two in 01/12, Banik Circle, Ballia-620450 (Pune), Maharashtra. Additionally, in order to address the rise in demand for magnet winding wires, we have established our fourth facility in 99, Borah Zila, Guna 251354, 49/80, Mistry Circle, Guntur-118244 (formerly 487, Behl Road, Bhusawal-005242) in Maharashtra (\u201cSupa Facility\u201d), of which, phase I is currently operational. For details in relation to the land on which our Manufacturing Facilities are located, see, \u201cOur Business \u2013 Manufacturing Facilities\u201d on page 229. Further, Tanvi Mutti, phase II of which is under construction, as on the date of this Red Herring Prospectus is located at Supa Ahilyanagar (formerly 487, Behl Road, Bhusawal-005242), also in Maharashtra. Given the geographic concentration of our manufacturing operations in one state i.e. Maharashtra, our operations are susceptible to disruptions which may be caused by certain local and regional factors, including but not limited to political, economic and weather conditions, natural disasters, demographic factors, and other unforeseen events and circumstances. While there have not been any instances of risks materializing due to our geographical concentration in the three-month period ended June 30, 2025 and the Fiscals 2025, 2024 and 2023, if any such disruptions occurs due to reasons included herein, our operations may be affected leading to significant delays in the manufacturing and sale of our products which could materially and adversely affect our business, financial condition and results of operations.",
+            "detector_source": "spacy_ner",
+            "confidence": 0.92
+        },
+        {
+            "original_text": "Ahilyanagar",
+            "type": "PHYSICAL_OR_MAILING_ADDRESS",
+            "location": "EntityLocation(paragraph_index=534, table_index=None, row_index=None, cell_index=None, is_header=False, is_footer=False)",
+            "redacted_text_at_same_location": "As of the date of this Red Herring Prospectus, we primarily manufacture our products at our four manufacturing facilities, one at Taloja (Raigad), Maharashtra, and two in 01/12, Banik Circle, Ballia-620450 (Pune), Maharashtra. Additionally, in order to address the rise in demand for magnet winding wires, we have established our fourth facility in 99, Borah Zila, Guna 251354, 49/80, Mistry Circle, Guntur-118244 (formerly 487, Behl Road, Bhusawal-005242) in Maharashtra (\u201cSupa Facility\u201d), of which, phase I is currently operational. For details in relation to the land on which our Manufacturing Facilities are located, see, \u201cOur Business \u2013 Manufacturing Facilities\u201d on page 229. Further, Tanvi Mutti, phase II of which is under construction, as on the date of this Red Herring Prospectus is located at Supa Ahilyanagar (formerly 487, Behl Road, Bhusawal-005242), also in Maharashtra. Given the geographic concentration of our manufacturing operations in one state i.e. Maharashtra, our operations are susceptible to disruptions which may be caused by certain local and regional factors, including but not limited to political, economic and weather conditions, natural disasters, demographic factors, and other unforeseen events and circumstances. While there have not been any instances of risks materializing due to our geographical concentration in the three-month period ended June 30, 2025 and the Fiscals 2025, 2024 and 2023, if any such disruptions occurs due to reasons included herein, our operations may be affected leading to significant delays in the manufacturing and sale of our products which could materially and adversely affect our business, financial condition and results of operations.",
+            "detector_source": "spacy_ner",
+            "confidence": 0.92
+        },
+        {
+            "original_text": "Supa Facility",
+            "type": "PERSON",
+            "location": "EntityLocation(paragraph_index=534, table_index=None, row_index=None, cell_index=None, is_header=False, is_footer=False)",
+            "redacted_text_at_same_location": "As of the date of this Red Herring Prospectus, we primarily manufacture our products at our four manufacturing facilities, one at Taloja (Raigad), Maharashtra, and two in 01/12, Banik Circle, Ballia-620450 (Pune), Maharashtra. Additionally, in order to address the rise in demand for magnet winding wires, we have established our fourth facility in 99, Borah Zila, Guna 251354, 49/80, Mistry Circle, Guntur-118244 (formerly 487, Behl Road, Bhusawal-005242) in Maharashtra (\u201cSupa Facility\u201d), of which, phase I is currently operational. For details in relation to the land on which our Manufacturing Facilities are located, see, \u201cOur Business \u2013 Manufacturing Facilities\u201d on page 229. Further, Tanvi Mutti, phase II of which is under construction, as on the date of this Red Herring Prospectus is located at Supa Ahilyanagar (formerly 487, Behl Road, Bhusawal-005242), also in Maharashtra. Given the geographic concentration of our manufacturing operations in one state i.e. Maharashtra, our operations are susceptible to disruptions which may be caused by certain local and regional factors, including but not limited to political, economic and weather conditions, natural disasters, demographic factors, and other unforeseen events and circumstances. While there have not been any instances of risks materializing due to our geographical concentration in the three-month period ended June 30, 2025 and the Fiscals 2025, 2024 and 2023, if any such disruptions occurs due to reasons included herein, our operations may be affected leading to significant delays in the manufacturing and sale of our products which could materially and adversely affect our business, financial condition and results of operations.",
+            "detector_source": "spacy_ner",
+            "confidence": 0.7
+        }
+    ],
+    "by_category": {
+        "COMPANY": {
+            "total": 242,
+            "survived": 0
+        },
+        "PHYSICAL_OR_MAILING_ADDRESS": {
+            "total": 49,
+            "survived": 5
+        },
+        "PERSON": {
+            "total": 89,
+            "survived": 2
+        },
+        "PHONE": {
+            "total": 27,
+            "survived": 0
+        },
+        "EMAIL": {
+            "total": 42,
+            "survived": 0
+        }
+    }
+}
